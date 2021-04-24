@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:logintest/main.dart';
+import 'Main/DesignForAllScreen.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -11,61 +11,47 @@ class Home extends StatefulWidget {
   }
 }
 
-/*
-class _Services extends State<Home> {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    //return MyStatefulWidget();
-    return testapp();
-  }
-}
-*/
 class testapp extends State<Home> {
+  Future<bool> _onBackPressed() {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('هل تريد الخروج من الطبيق ؟ '),
+            content: Text('You are going to exit the application!!'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('NO'),
+                onPressed: () {
+                  Navigator.popUntil(context, ModalRoute.withName('/'));
+                },
+              ),
+              FlatButton(
+                child: Text('YES'),
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     int _selectedIndex = 0;
 
-    return new Scaffold(
-      appBar: new AppBar(
-        centerTitle: true,
-        title: new Text("دليل الخدمات"),
-        backgroundColor: Colors.green.shade700,
-      ),
-      body: new Container(
-        child: MyStatefulWidget(),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.green.shade700,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.design_services,
-            ),
-            label: 'خدمات',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.request_quote_outlined,
-            ),
-            label: 'الطلبات',
-            backgroundColor: Colors.white,
-          ),
-          BottomNavigationBarItem(
-            backgroundColor: Colors.white,
-            icon: Icon(
-              Icons.login,
-            ),
-            label: 'تسجيل',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        unselectedItemColor: Colors.white,
-        onTap: null,
-      ),
-    );
+    return Directionality(
+        textDirection: TextDirection.rtl,
+        child: new Scaffold(
+            appBar: MyAppBar("دليل الخدمات"),
+            body: WillPopScope(
+                onWillPop: _onBackPressed,
+                child: new Container(
+                  child: MyStatefulWidget(),
+                )),
+            bottomNavigationBar: MyNavigationBar(0)));
   }
 }
 
